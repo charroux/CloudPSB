@@ -8,6 +8,12 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions; 
+import com.google.appengine.api.taskqueue.TaskOptions.Method;
+
+
 @SuppressWarnings("serial")
 public class GoogleCloudServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -35,6 +41,10 @@ public class GoogleCloudServlet extends HttpServlet {
 		person.setProperty("age", age);
 		
 		dataStore.put(person);
+		
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(TaskOptions.Builder.withUrl("/backend").method(Method.GET)); 
+
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
 	}
