@@ -30,6 +30,11 @@ public class GoogleCloudServlet extends HttpServlet {
 		
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		
+		Entity person = new Entity("Person");
+		person.setProperty("name", name);
+		person.setProperty("age", age);
+		
+		dataStore.put(person);
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
 	}
